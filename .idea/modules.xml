@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/doudizhu1/doudizhu1.iml" filepath="$PROJECT_DIR$/doudizhu1/doudizhu1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java001/java001.iml" filepath="$PROJECT_DIR$/java001/java001.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java002/java002.iml" filepath="$PROJECT_DIR$/java002/java002.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java003/java003.iml" filepath="$PROJECT_DIR$/java003/java003.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java004/java004.iml" filepath="$PROJECT_DIR$/java004/java004.iml" />
+      <module fileurl="file://$PROJECT_DIR$/java01.iml" filepath="$PROJECT_DIR$/java01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/puzzlegame/puzzlegame.iml" filepath="$PROJECT_DIR$/puzzlegame/puzzlegame.iml" />
+    </modules>
+  </component>
+</project>
