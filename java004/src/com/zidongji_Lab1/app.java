@@ -56,43 +56,62 @@ public class app {
         int emptyIndex=inNFA.charmap.get("empty");
         for (int i = 0; i < inNFA.transfer.length; i++) {
             String leftString =inNFA.Allstrings[i];
-            ArrayList<String> emptyClosure=new ArrayList<>();
-            emptyClosure.addAll(inNFA.transfer[i][emptyIndex]);
-            emptyClosure.add(inNFA.Allstrings[i]);
+            ArrayList<String> aim=new ArrayList<>();
+            aim.add(inNFA.Allstrings[i]);
+            emptySearch(inNFA,emptyIndex,aim);
             for (int j = 0; j < inNFA.transfer[i].length; j++) {
                 String ch=inNFA.Allchars[j];
                 if (ch.equals("empty")) {
                     continue;
                 }
                 HashSet<String> tempSet= new HashSet<>();
-                for (String s : emptyClosure) {
+                for (String s : aim) {
                     if(s==null || s.equals("")){
                         continue;
                     }
                     tempSet.addAll(inNFA.transfer[inNFA.stringmap.get(s)][j]);
                 }
-                HashSet<String> newSet=new HashSet<>();
-                newSet.addAll(tempSet);
-                for (String s : tempSet) {
-                    if(s==null || s.equals("")){
-                        continue;
-                    }
-                    newSet.addAll(inNFA.transfer[inNFA.stringmap.get(s)][emptyIndex]);
-                }
-                HashSet<String> NewerSet =new HashSet<>();
-                NewerSet.addAll(newSet);
-                for (String s : newSet) {
-                    if(s.equals("")|| s==null){
-                        continue;
-                    }
-                    NewerSet.addAll(inNFA.transfer[inNFA.stringmap.get(s)][emptyIndex]);
-                }
+                ArrayList<String> newArraylist=new ArrayList<>();
+                ArrayList<String> newAim=new ArrayList<>();
+                newAim.addAll(tempSet);
+                emptySearch(inNFA,emptyIndex,newAim);
+//                for (String s : tempSet) {
+//                    if(s==null || s.equals("")){
+//                        continue;
+//                    }
+//                    newSet.addAll(inNFA.transfer[inNFA.stringmap.get(s)][emptyIndex]);
+//                }
                 inNFA.emptyTransfer[i][j].clear();
-                inNFA.emptyTransfer[i][j].addAll(NewerSet);
+                inNFA.emptyTransfer[i][j].addAll(newAim);
 
             }
         }
 
+    }
+    public static void emptySearch(nfa inNFA,int emptyIndex,ArrayList<String> aim){
+        HashSet<String> tempSet=new HashSet<>();
+        tempSet.addAll(aim);
+        while (true){
+            for (String s : aim) {
+                if(s==null||s.equals("")){
+                    continue;
+                }
+                tempSet.addAll(inNFA.transfer[inNFA.stringmap.get(s)][emptyIndex]);
+            }
+            if(tempSet.size()==aim.size()){
+                boolean isEqual=true;
+                for (String string : aim) {
+                    if(!tempSet.contains(string)){
+                        isEqual=false;
+                    }
+                }
+                if (isEqual) {
+                    return;
+                }
+            }
+            aim.clear();
+            aim.addAll(tempSet);
+        }
     }
 
     public static void dfs(dfa outDFA,boolean[] visited,String s){
