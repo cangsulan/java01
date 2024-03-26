@@ -10,12 +10,13 @@ public class app {
         initiateDFA(inNFA,outDFA);
         if (inNFA.hasEmpty) {
             getEclosure(inNFA);
+            inNFA.transfer= inNFA.emptyTransfer;
         }
         convert(inNFA,outDFA);
 
         System.out.printf("%12s","状态");
         for (String s : inNFA.Allchars) {
-            System.out.printf("\t\t\t\t\t%20s\t\t",s);
+            System.out.printf("\t\t\t\t\t%16s\t\t",s);
         }
         System.out.println();
         boolean[] visited=new boolean[outDFA.stringList.size()];
@@ -27,7 +28,6 @@ public class app {
         System.out.println("----------------------------------------------------------------------------------------------------------------");
 
         //准备工作已经完成，下面开始打印结果：
-
         for (int i = 0; i < outDFA.transfer.length; i++) {
             if (visited[i]) {
                 if (outDFA.stringList.get(i).equals("{}")) {
@@ -41,7 +41,10 @@ public class app {
                     System.out.printf("%20s",outDFA.stringList.get(i));
                 }
                 for (int j = 0; j < outDFA.transfer[i].length; j++) {
-                    System.out.printf("\t\t\t\t\t%13s\t\t\t\t",outDFA.transfer[i][j]);
+                    if(inNFA.hasEmpty && outDFA.charmap.get("empty")==j){
+                        continue;
+                    }
+                    System.out.printf("\t\t\t\t\t%8s\t\t\t\t",outDFA.transfer[i][j]);
                 }
                 System.out.println();
             }
@@ -50,6 +53,45 @@ public class app {
     }
     public static void getEclosure(nfa inNFA){
         //有空转换，要进行 空闭包 处理
+        int emptyIndex=inNFA.charmap.get("empty");
+        for (int i = 0; i < inNFA.transfer.length; i++) {
+            String leftString =inNFA.Allstrings[i];
+            ArrayList<String> emptyClosure=new ArrayList<>();
+            emptyClosure.addAll(inNFA.transfer[i][emptyIndex]);
+            emptyClosure.add(inNFA.Allstrings[i]);
+            for (int j = 0; j < inNFA.transfer[i].length; j++) {
+                String ch=inNFA.Allchars[j];
+                if (ch.equals("empty")) {
+                    continue;
+                }
+                HashSet<String> tempSet= new HashSet<>();
+                for (String s : emptyClosure) {
+                    if(s==null || s.equals("")){
+                        continue;
+                    }
+                    tempSet.addAll(inNFA.transfer[inNFA.stringmap.get(s)][j]);
+                }
+                HashSet<String> newSet=new HashSet<>();
+                newSet.addAll(tempSet);
+                for (String s : tempSet) {
+                    if(s==null || s.equals("")){
+                        continue;
+                    }
+                    newSet.addAll(inNFA.transfer[inNFA.stringmap.get(s)][emptyIndex]);
+                }
+                HashSet<String> NewerSet =new HashSet<>();
+                NewerSet.addAll(newSet);
+                for (String s : newSet) {
+                    if(s.equals("")|| s==null){
+                        continue;
+                    }
+                    NewerSet.addAll(inNFA.transfer[inNFA.stringmap.get(s)][emptyIndex]);
+                }
+                inNFA.emptyTransfer[i][j].clear();
+                inNFA.emptyTransfer[i][j].addAll(NewerSet);
+
+            }
+        }
 
     }
 
@@ -154,11 +196,17 @@ public class app {
         inNFA.Endstrings=sc.nextLine().split(" ");
         System.out.println("接下来输入状态转换函数，请按照提示输入：");
         inNFA.transfer=new ArrayList[inNFA.stringmap.entrySet().size()][inNFA.charmap.entrySet().size()];
+        if(inNFA.hasEmpty){
+            inNFA.emptyTransfer=new ArrayList[inNFA.stringmap.entrySet().size()][inNFA.charmap.entrySet().size()];
+        }
         for (String s : inNFA.stringmap.keySet()) {
             for (String ch : inNFA.charmap.keySet()) {
                 System.out.println("请输入"+s+"沿字符"+ch+"下的转换状态集合，若为空则直接 回车 即可，用空格来分开不同元素：");
                 ArrayList<String> arrayList=new ArrayList<>(List.of(sc.nextLine().split(" ")));
                 inNFA.transfer[inNFA.stringmap.get(s)][inNFA.charmap.get(ch)]=arrayList;
+                if(inNFA.hasEmpty){
+                    inNFA.emptyTransfer[inNFA.stringmap.get(s)][inNFA.charmap.get(ch)]=arrayList;
+                }
             }
         }
 

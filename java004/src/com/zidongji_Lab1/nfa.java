@@ -14,6 +14,7 @@ public class nfa {
 
 //转移函数：
     ArrayList<String>[][] transfer;
+    ArrayList<String>[][] emptyTransfer;
     nfa(){
         this.stringmap=new LinkedHashMap<>();
         this.charmap=new LinkedHashMap<>();
@@ -28,11 +29,8 @@ public class nfa {
         }
         this.Allstrings=Allstrings;
         this.Allchars=Allchars;
-        for (String s : this.Allchars) {
-            if(s.equals("empty")){
-                this.hasEmpty=true;
-                break;
-            }
+        if (this.charmap.containsKey("empty")) {
+            this.hasEmpty=true;
         }
     }
 }
