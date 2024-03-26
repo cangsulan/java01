@@ -51,17 +51,6 @@ public class app {
                 if(nexts == null){
                     continue;
                 }
-                String[] tempString=nexts.substring(1,nexts.length()-1).split(",");
-                Arrays.sort(tempString);
-                nexts="{";
-                for (String temps : tempString) {
-                    if(nexts.equals("{")){
-                        nexts=nexts+temps;
-                    }else{
-                        nexts=nexts+","+temps;
-                    }
-                }
-                nexts=nexts+"}";
                 int nextIndex=outDFA.stringList.indexOf(nexts);
                 if (nextIndex>=0 && nextIndex<outDFA.stringList.size() && !visited[nextIndex]) {
                     dfs(outDFA,visited,nexts);
@@ -105,6 +94,19 @@ public class app {
         result=result+"}";
         if(result.equals("{}")){
             result=null;
+        }
+        if(result!=null){
+            String[] tempString=result.substring(1,result.length()-1).split(",");
+            Arrays.sort(tempString);
+            result="{";
+            for (String temps : tempString) {
+                if(result.equals("{")){
+                    result=result+temps;
+                }else{
+                    result=result+","+temps;
+                }
+            }
+            result=result+"}";
         }
         outDFA.transfer[i][j]=result;
     }
