@@ -12,6 +12,33 @@ public class app {
         input(inNFA);
         initiateDFA(inNFA,outDFA);
         convert(inNFA,outDFA);
+
+        System.out.print("状态\t\t\t");
+        for (String s : inNFA.Allchars) {
+            System.out.print(s+"\t\t\t");
+        }
+        System.out.println();
+
+
+
+
+
+        for (int i = 0; i < outDFA.transfer.length; i++) {
+            if (outDFA.stringList.get(i).equals("{}")) {
+                continue;
+            }
+            if (outDFA.Endstrings.contains(outDFA.stringList.get(i))) {
+                System.out.print("*");
+            }else if (outDFA.stringList.get(i).equals(outDFA.starter)){
+                System.out.print("->");
+            }
+            System.out.print(outDFA.stringList.get(i)+"\t\t\t");
+            for (int j = 0; j < outDFA.transfer[i].length; j++) {
+                System.out.print(outDFA.transfer[i][j]+"\t\t\t");
+            }
+            System.out.println();
+        }
+
     }
     public static void convert(nfa inNFA,dfa outDFA){
         for (int i = 0; i < outDFA.transfer.length; i++) {
@@ -20,14 +47,37 @@ public class app {
                 for (boolean b : visited) {
                     b=false;
                 }
-
-                DFSsearch(inNFA,outDFA,outDFA.transfer[i][j],inNFA.Allchars[j],visited);
+                DFSsearch(inNFA,outDFA,i,j,inNFA.Allchars[j],visited);
             }
         }
     }
-    public static void DFSsearch(nfa inNFA,dfa outDFA,ArrayList<String> list,String ch,boolean[] visited){
+    public static void DFSsearch(nfa inNFA,dfa outDFA,int i,int j,String ch,boolean[] visited){
         LinkedHashSet<String> re=new LinkedHashSet<>();
+        String endstring=outDFA.stringList.get(i);
+        if (endstring.equals("{}")) {
+            outDFA.transfer[i][j]=null;
+            return;
+        }
+        String[] endstrings=endstring.substring(1,endstring.length()-1).split(",");
+        for (String s : endstrings) {
+            re.addAll(inNFA.transfer[inNFA.stringmap.get(s)][inNFA.charmap.get(ch)]);
+        }
+        String result="{";
+        for (String s : re) {
+            if(!s.equals("")){
+                if(result.equals("{")){
+                    result=result+s;
+                }else{
+                    result=result+","+s;
+                }
+            }
 
+        }
+        result=result+"}";
+        if(result.equals("{}")){
+            result=null;
+        }
+        outDFA.transfer[i][j]=result;
     }
     public static void initiateDFA(nfa inNFA,dfa outDFA){
         outDFA.charmap=inNFA.charmap;
@@ -53,7 +103,7 @@ public class app {
                 }
             }
         }
-        outDFA.transfer=new ArrayList[outDFA.Endstrings.size()][outDFA.charmap.size()];
+        outDFA.transfer=new String[outDFA.stringList.size()][outDFA.charmap.size()];
 //        for (String endstring : outDFA.Endstrings) {
 //            System.out.println(endstring);
 //        }
