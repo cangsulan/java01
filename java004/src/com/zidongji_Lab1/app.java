@@ -26,7 +26,7 @@ public class app {
         for (boolean b : visited) {
             b=false;
         }
-        dfs(outDFA,visited,outDFA.starter);
+        dfs(inNFA,outDFA,visited,outDFA.starter);
 
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------");
 
@@ -110,7 +110,7 @@ public class app {
         }
     }
 
-    public static void dfs(dfa outDFA,boolean[] visited,String s){
+    public static void dfs(nfa inNFA,dfa outDFA,boolean[] visited,String s){
         int index=outDFA.stringList.indexOf(s);
         if (index>=0&&index<outDFA.stringList.size()) {
             visited[index]=true;
@@ -118,12 +118,12 @@ public class app {
                 if(outDFA.transfer[index][i] == null){
                     continue;
                 }
-                if(outDFA.charmap.get("empty")==i){
+                if(inNFA.hasEmpty && outDFA.charmap.get("empty")==i){
                     continue;
                 }
                 int nextIndex=outDFA.stringList.indexOf(outDFA.transfer[index][i]);
                 if (nextIndex>=0 && nextIndex<outDFA.stringList.size() && !visited[nextIndex]) {
-                    dfs(outDFA,visited,outDFA.transfer[index][i]);
+                    dfs(inNFA,outDFA,visited,outDFA.transfer[index][i]);
                 }
             }
         }
