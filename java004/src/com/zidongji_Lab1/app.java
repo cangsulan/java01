@@ -75,15 +75,8 @@ public class app {
                 ArrayList<String> newAim=new ArrayList<>();
                 newAim.addAll(tempSet);
                 emptySearch(inNFA,emptyIndex,newAim);
-//                for (String s : tempSet) {
-//                    if(s==null || s.equals("")){
-//                        continue;
-//                    }
-//                    newSet.addAll(inNFA.transfer[inNFA.stringmap.get(s)][emptyIndex]);
-//                }
                 inNFA.emptyTransfer[i][j].clear();
                 inNFA.emptyTransfer[i][j].addAll(newAim);
-
             }
         }
 
@@ -224,7 +217,7 @@ public class app {
                 ArrayList<String> arrayList=new ArrayList<>(List.of(sc.nextLine().split(" ")));
                 inNFA.transfer[inNFA.stringmap.get(s)][inNFA.charmap.get(ch)]=arrayList;
                 if(inNFA.hasEmpty){
-                    inNFA.emptyTransfer[inNFA.stringmap.get(s)][inNFA.charmap.get(ch)]=arrayList;
+                    inNFA.emptyTransfer[inNFA.stringmap.get(s)][inNFA.charmap.get(ch)]=new ArrayList<>(arrayList);
                 }
             }
         }
