@@ -16,7 +16,10 @@ public class app {
 
         System.out.printf("%12s","状态");
         for (String s : inNFA.Allchars) {
-            System.out.printf("\t\t\t\t\t%16s\t\t",s);
+            if(s.equals("empty")){
+                continue;
+            }
+            System.out.printf("\t\t\t%16s\t\t",s);
         }
         System.out.println();
         boolean[] visited=new boolean[outDFA.stringList.size()];
@@ -25,7 +28,7 @@ public class app {
         }
         dfs(outDFA,visited,outDFA.starter);
 
-        System.out.println("----------------------------------------------------------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------");
 
         //准备工作已经完成，下面开始打印结果：
         for (int i = 0; i < outDFA.transfer.length; i++) {
@@ -44,7 +47,7 @@ public class app {
                     if(inNFA.hasEmpty && outDFA.charmap.get("empty")==j){
                         continue;
                     }
-                    System.out.printf("\t\t\t\t\t%8s\t\t\t\t",outDFA.transfer[i][j]);
+                    System.out.printf("\t\t\t%8s\t\t\t\t",outDFA.transfer[i][j]);
                 }
                 System.out.println();
             }
@@ -111,13 +114,16 @@ public class app {
         int index=outDFA.stringList.indexOf(s);
         if (index>=0&&index<outDFA.stringList.size()) {
             visited[index]=true;
-            for (String nexts : outDFA.transfer[index]) {
-                if(nexts == null){
+            for (int i = 0; i < outDFA.transfer[index].length; i++) {
+                if(outDFA.transfer[index][i] == null){
                     continue;
                 }
-                int nextIndex=outDFA.stringList.indexOf(nexts);
+                if(outDFA.charmap.get("empty")==i){
+                    continue;
+                }
+                int nextIndex=outDFA.stringList.indexOf(outDFA.transfer[index][i]);
                 if (nextIndex>=0 && nextIndex<outDFA.stringList.size() && !visited[nextIndex]) {
-                    dfs(outDFA,visited,nexts);
+                    dfs(outDFA,visited,outDFA.transfer[index][i]);
                 }
             }
         }
