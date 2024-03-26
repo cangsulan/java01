@@ -1,9 +1,6 @@
 package com.zidongji_Lab1;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class app {
     public static void main(String[] args) {
@@ -18,27 +15,59 @@ public class app {
             System.out.print(s+"\t\t\t");
         }
         System.out.println();
+        boolean[] visited=new boolean[outDFA.stringList.size()];
+        for (boolean b : visited) {
+            b=false;
+        }
+        dfs(outDFA,visited,outDFA.starter);
 
-
-
+        System.out.println("-------------------------------------------------");
 
 
         for (int i = 0; i < outDFA.transfer.length; i++) {
-            if (outDFA.stringList.get(i).equals("{}")) {
-                continue;
+            if (visited[i]) {
+                if (outDFA.stringList.get(i).equals("{}")) {
+                    continue;
+                }
+                if (outDFA.Endstrings.contains(outDFA.stringList.get(i))) {
+                    System.out.print("*");
+                }else if (outDFA.stringList.get(i).equals(outDFA.starter)){
+                    System.out.print("->");
+                }
+                System.out.print(outDFA.stringList.get(i)+"\t\t\t");
+                for (int j = 0; j < outDFA.transfer[i].length; j++) {
+                    System.out.print(outDFA.transfer[i][j]+"\t\t\t");
+                }
+                System.out.println();
             }
-            if (outDFA.Endstrings.contains(outDFA.stringList.get(i))) {
-                System.out.print("*");
-            }else if (outDFA.stringList.get(i).equals(outDFA.starter)){
-                System.out.print("->");
-            }
-            System.out.print(outDFA.stringList.get(i)+"\t\t\t");
-            for (int j = 0; j < outDFA.transfer[i].length; j++) {
-                System.out.print(outDFA.transfer[i][j]+"\t\t\t");
-            }
-            System.out.println();
         }
 
+    }
+    public static void dfs(dfa outDFA,boolean[] visited,String s){
+        int index=outDFA.stringList.indexOf(s);
+        if (index>=0&&index<outDFA.stringList.size()) {
+            visited[index]=true;
+            for (String nexts : outDFA.transfer[index]) {
+                if(nexts == null){
+                    continue;
+                }
+                String[] tempString=nexts.substring(1,nexts.length()-1).split(",");
+                Arrays.sort(tempString);
+                nexts="{";
+                for (String temps : tempString) {
+                    if(nexts.equals("{")){
+                        nexts=nexts+temps;
+                    }else{
+                        nexts=nexts+","+temps;
+                    }
+                }
+                nexts=nexts+"}";
+                int nextIndex=outDFA.stringList.indexOf(nexts);
+                if (nextIndex>=0 && nextIndex<outDFA.stringList.size() && !visited[nextIndex]) {
+                    dfs(outDFA,visited,nexts);
+                }
+            }
+        }
     }
     public static void convert(nfa inNFA,dfa outDFA){
         for (int i = 0; i < outDFA.transfer.length; i++) {
