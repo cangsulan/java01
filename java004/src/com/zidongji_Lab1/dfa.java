@@ -1,11 +1,11 @@
 package com.zidongji_Lab1;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 
 public class dfa {
-    HashSet<String> Endstrings;//终结集合
+    LinkedHashSet<String> Endstrings;//终结集合
     String starter;//初始状态
     ArrayList<String> stringList;//状态集合
     LinkedHashMap<String,Integer> stringmap;//状态集合及编号
@@ -17,7 +17,7 @@ public class dfa {
         this.stringmap=new LinkedHashMap<>();
         this.charmap=new LinkedHashMap<>();
         this.stringList=new ArrayList<>();
-        this.Endstrings=new HashSet<>();
+        this.Endstrings=new LinkedHashSet<>();
     }
     public void Autogetmap(String[] Allstrings,String[] Allchars){
         for (int i = 0; i < Allstrings.length; i++) {

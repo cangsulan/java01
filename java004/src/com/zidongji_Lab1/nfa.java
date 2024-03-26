@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class nfa {
+    String[] Allstrings;
+    String[] Allchars;
     String[] Endstrings;//终结集合
     String starter;//初始状态
     LinkedHashMap<String,Integer> stringmap;//状态集合及编号
@@ -23,6 +25,7 @@ public class nfa {
         for (int i = 0; i < Allchars.length; i++) {
             this.charmap.put(Allchars[i],i);
         }
-
+        this.Allstrings=Allstrings;
+        this.Allchars=Allchars;
     }
 }

@@ -1,6 +1,7 @@
 package com.zidongji_Lab1;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,6 +14,19 @@ public class app {
         convert(inNFA,outDFA);
     }
     public static void convert(nfa inNFA,dfa outDFA){
+        for (int i = 0; i < outDFA.transfer.length; i++) {
+            for (int j = 0; j < outDFA.transfer[i].length; j++) {
+                boolean[] visited=new boolean[outDFA.Endstrings.size()];
+                for (boolean b : visited) {
+                    b=false;
+                }
+
+                DFSsearch(inNFA,outDFA,outDFA.transfer[i][j],inNFA.Allchars[j],visited);
+            }
+        }
+    }
+    public static void DFSsearch(nfa inNFA,dfa outDFA,ArrayList<String> list,String ch,boolean[] visited){
+        LinkedHashSet<String> re=new LinkedHashSet<>();
 
     }
     public static void initiateDFA(nfa inNFA,dfa outDFA){
@@ -39,6 +53,7 @@ public class app {
                 }
             }
         }
+        outDFA.transfer=new ArrayList[outDFA.Endstrings.size()][outDFA.charmap.size()];
 //        for (String endstring : outDFA.Endstrings) {
 //            System.out.println(endstring);
 //        }
