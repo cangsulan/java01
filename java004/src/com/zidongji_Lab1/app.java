@@ -23,6 +23,7 @@ public class app {
 
         System.out.println("-------------------------------------------------");
 
+        //准备工作已经完成，下面开始打印结果：
 
         for (int i = 0; i < outDFA.transfer.length; i++) {
             if (visited[i]) {
@@ -61,15 +62,11 @@ public class app {
     public static void convert(nfa inNFA,dfa outDFA){
         for (int i = 0; i < outDFA.transfer.length; i++) {
             for (int j = 0; j < outDFA.transfer[i].length; j++) {
-                boolean[] visited=new boolean[outDFA.Endstrings.size()];
-                for (boolean b : visited) {
-                    b=false;
-                }
-                DFSsearch(inNFA,outDFA,i,j,inNFA.Allchars[j],visited);
+                search(inNFA,outDFA,i,j,inNFA.Allchars[j]);
             }
         }
     }
-    public static void DFSsearch(nfa inNFA,dfa outDFA,int i,int j,String ch,boolean[] visited){
+    public static void search(nfa inNFA,dfa outDFA,int i,int j,String ch){
         LinkedHashSet<String> re=new LinkedHashSet<>();
         String endstring=outDFA.stringList.get(i);
         if (endstring.equals("{}")) {
@@ -80,33 +77,24 @@ public class app {
         for (String s : endstrings) {
             re.addAll(inNFA.transfer[inNFA.stringmap.get(s)][inNFA.charmap.get(ch)]);
         }
+        //由于是hashset，所以得到的是乱序，比如：q1 q2 q0
+        //下面把result进行拆解排序，再组装好：
+        String[] tempString=new String[re.size()];
+        re.toArray(tempString);
+        Arrays.sort(tempString);
         String result="{";
-        for (String s : re) {
-            if(!s.equals("")){
+        for (String s : tempString) {
+            if(!s.isEmpty()){
                 if(result.equals("{")){
                     result=result+s;
                 }else{
                     result=result+","+s;
                 }
             }
-
         }
         result=result+"}";
         if(result.equals("{}")){
             result=null;
-        }
-        if(result!=null){
-            String[] tempString=result.substring(1,result.length()-1).split(",");
-            Arrays.sort(tempString);
-            result="{";
-            for (String temps : tempString) {
-                if(result.equals("{")){
-                    result=result+temps;
-                }else{
-                    result=result+","+temps;
-                }
-            }
-            result=result+"}";
         }
         outDFA.transfer[i][j]=result;
     }
@@ -114,17 +102,8 @@ public class app {
         outDFA.charmap=inNFA.charmap;
         outDFA.starter="{"+inNFA.starter+"}";
         String[] strings=inNFA.stringmap.keySet().toArray(new String[inNFA.stringmap.keySet().size()]);
-//        int ii=0;
-//        outDFA.stringList[ii]=null;
-//        ii++;
-//        for (int i=0; i <= strings.length; i++) {
-//            outDFA.stringList[ii]="{"+strings[i]+"}";
-//            ii++;
-//        }
+
         getPset(outDFA.stringList,strings);
-//        for (String s : outDFA.stringList) {
-//            System.out.println(s);
-//        }
         for (String s : outDFA.stringList) {
             ArrayList<String> newstring=new ArrayList<>();
             newstring.addAll(List.of(s.substring(1, s.length() - 1).split(",")));
@@ -135,13 +114,8 @@ public class app {
             }
         }
         outDFA.transfer=new String[outDFA.stringList.size()][outDFA.charmap.size()];
-//        for (String endstring : outDFA.Endstrings) {
-//            System.out.println(endstring);
-//        }
-
     }
     public static void getPset(ArrayList<String> stringList,String[] strings){
-        List<List<String>> res = new ArrayList<>();
         int n=strings.length;
         for(int i =0 ; i < 1<<n ; i++){
             String newString="{";
@@ -170,25 +144,14 @@ public class app {
         System.out.println("请输入终止状态集合，用空格来分开不同元素：");
         inNFA.Endstrings=sc.nextLine().split(" ");
         System.out.println("接下来输入状态转换函数，请按照提示输入：");
-        //System.out.println("请输入"++"沿字符"++"下的转换状态集合，用空格来分开不同元素：");
         inNFA.transfer=new ArrayList[inNFA.stringmap.entrySet().size()][inNFA.charmap.entrySet().size()];
         for (String s : inNFA.stringmap.keySet()) {
             for (String ch : inNFA.charmap.keySet()) {
                 System.out.println("请输入"+s+"沿字符"+ch+"下的转换状态集合，若为空则直接 回车 即可，用空格来分开不同元素：");
                 ArrayList<String> arrayList=new ArrayList<>(List.of(sc.nextLine().split(" ")));
-//                if(arrayList.size()==1&&arrayList.get(0).equals("null")){
-//                    inNFA.transfer[inNFA.stringmap.get(s)][inNFA.charmap.get(ch)]=null;
-//                }else {
-//                    inNFA.transfer[inNFA.stringmap.get(s)][inNFA.charmap.get(ch)]=arrayList;
-//                }
                 inNFA.transfer[inNFA.stringmap.get(s)][inNFA.charmap.get(ch)]=arrayList;
             }
         }
-        /*for (ArrayList<String>[] Testarray : inNFA.transfer) {
-            for (ArrayList<String> list : Testarray) {
-                System.out.println(list);
-            }
-        }*/
 
     }
 }
