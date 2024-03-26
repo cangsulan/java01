@@ -10,9 +10,9 @@ public class app {
         initiateDFA(inNFA,outDFA);
         convert(inNFA,outDFA);
 
-        System.out.print("状态\t\t\t");
+        System.out.printf("%12s","状态");
         for (String s : inNFA.Allchars) {
-            System.out.print(s+"\t\t\t");
+            System.out.printf("\t\t\t\t\t%20s\t\t",s);
         }
         System.out.println();
         boolean[] visited=new boolean[outDFA.stringList.size()];
@@ -21,7 +21,7 @@ public class app {
         }
         dfs(outDFA,visited,outDFA.starter);
 
-        System.out.println("-------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------------------");
 
         //准备工作已经完成，下面开始打印结果：
 
@@ -31,13 +31,14 @@ public class app {
                     continue;
                 }
                 if (outDFA.Endstrings.contains(outDFA.stringList.get(i))) {
-                    System.out.print("*");
+                    System.out.printf("%20s","*"+outDFA.stringList.get(i));
                 }else if (outDFA.stringList.get(i).equals(outDFA.starter)){
-                    System.out.print("->");
+                    System.out.printf("%20s","->"+outDFA.stringList.get(i));
+                }else {
+                    System.out.printf("%20s",outDFA.stringList.get(i));
                 }
-                System.out.print(outDFA.stringList.get(i)+"\t\t\t");
                 for (int j = 0; j < outDFA.transfer[i].length; j++) {
-                    System.out.print(outDFA.transfer[i][j]+"\t\t\t");
+                    System.out.printf("\t\t\t\t\t%13s\t\t\t\t",outDFA.transfer[i][j]);
                 }
                 System.out.println();
             }
