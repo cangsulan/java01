@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class nfa {
+    boolean hasEmpty;
     String[] Allstrings;
     String[] Allchars;
     String[] Endstrings;//终结集合
@@ -16,7 +17,7 @@ public class nfa {
     nfa(){
         this.stringmap=new LinkedHashMap<>();
         this.charmap=new LinkedHashMap<>();
-
+        this.hasEmpty=false;
     }
     public void Autogetmap(String[] Allstrings,String[] Allchars){
         for (int i = 0; i < Allstrings.length; i++) {
@@ -27,5 +28,11 @@ public class nfa {
         }
         this.Allstrings=Allstrings;
         this.Allchars=Allchars;
+        for (String s : this.Allchars) {
+            if(s.equals("empty")){
+                this.hasEmpty=true;
+                break;
+            }
+        }
     }
 }

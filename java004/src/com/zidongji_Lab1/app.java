@@ -8,6 +8,9 @@ public class app {
         dfa outDFA = new dfa();
         input(inNFA);
         initiateDFA(inNFA,outDFA);
+        if (inNFA.hasEmpty) {
+            getEclosure(inNFA);
+        }
         convert(inNFA,outDFA);
 
         System.out.printf("%12s","状态");
@@ -45,6 +48,11 @@ public class app {
         }
 
     }
+    public static void getEclosure(nfa inNFA){
+        //有空转换，要进行 空闭包 处理
+
+    }
+
     public static void dfs(dfa outDFA,boolean[] visited,String s){
         int index=outDFA.stringList.indexOf(s);
         if (index>=0&&index<outDFA.stringList.size()) {
@@ -137,7 +145,7 @@ public class app {
         System.out.println("请输入状态集合，用空格来分开不同元素：");
         Scanner sc=new Scanner(System.in);
         String[] Allstrings=sc.nextLine().split(" ");//切割得到状态的String集合
-        System.out.println("请输入字母表，用空格来分开不同元素：");
+        System.out.println("请输入字母表，用空格来分开不同元素：(若有空转换则额外输入empty)");
         String[] Allchars=sc.nextLine().split(" ");
         inNFA.Autogetmap(Allstrings,Allchars);
         System.out.println("请输入初始状态：");
