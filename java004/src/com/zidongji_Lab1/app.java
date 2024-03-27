@@ -57,7 +57,9 @@ public class app {
         }
 
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------");
-
+        System.out.println("输入任意内容，即可退出");
+        Scanner in=new Scanner(System.in);
+        in.next();
     }
     public static void getEclosure(nfa inNFA){
         //有空转换，要进行 空闭包 处理
