@@ -14,15 +14,15 @@ public class app {
         }
         convert(inNFA,outDFA);
 
-        System.out.println("--------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
         System.out.println("转换完成后的dfa如下表所示；");
-        System.out.println("--------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
         System.out.printf("%12s","状态");
         for (String s : inNFA.Allchars) {
             if(s.equals("empty")){
                 continue;
             }
-            System.out.printf("\t%16s\t",s);
+            System.out.printf("%20s",s);
         }
         System.out.println();
         boolean[] visited=new boolean[outDFA.stringList.size()];
@@ -31,7 +31,7 @@ public class app {
         }
         dfs(inNFA,outDFA,visited,outDFA.starter);
 
-        System.out.println("--------------------------------------------------------------------------------------------------------");
+        System.out.println("-------------------------------------------------------");
         //准备工作已经完成，下面开始打印结果：
         for (int i = 0; i < outDFA.transfer.length; i++) {
             if (visited[i]) {
@@ -49,13 +49,13 @@ public class app {
                     if(inNFA.hasEmpty && outDFA.charmap.get("empty")==j){
                         continue;
                     }
-                    System.out.printf("\t\t%8s\t\t",outDFA.transfer[i][j]);
+                    System.out.printf("%21s",outDFA.transfer[i][j]);
                 }
                 System.out.println();
             }
         }
 
-        System.out.println("--------------------------------------------------------------------------------------------------------");        System.out.println("输入任意内容，即可退出");
+        System.out.println("-------------------------------------------------------");
         Scanner in=new Scanner(System.in);
         in.next();
     }
