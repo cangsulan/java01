@@ -188,6 +188,7 @@ public class app {
                 for (String s : list) {
                     if(!cfg.T.contains(s)){
                         canAdd=false;
+                        break;
                     }
                 }
                 if(canAdd){
@@ -207,6 +208,7 @@ public class app {
                     for (String s : list) {
                         if(!N1.contains(s) && !cfg.T.contains(s)){
                             canAdd=false;
+                            break;
                         }
                     }
                     if(canAdd){
