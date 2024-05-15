@@ -1,4 +1,4 @@
-package com.zidongji_Lab2;
+package com.zidongji_Lab2_1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,10 +7,6 @@ import java.util.Scanner;
 
 public class app {
     public static void main(String[] args) {
-        //在 main2中 进行 实验的第2个内容：
-        // 构造与 下推自动机 等价的 上下文无关文法 ，并利用内容1中的算法输出变换后的上下文无关文法
-//        main2(args);
-//        return;
         //下面是 原来写的 实验内容 1：
         //进行 上下文无关文法 的 转换实验
         //先得到输入的CFG
@@ -30,10 +26,6 @@ public class app {
         System.out.println("消去 无用符号 后：");
         CFG cfg3=delete_useless(cfg2);
         printCFG(cfg3);
-    }
-
-    public static void main2(String[] args) {
-
     }
 
     public static CFG delete_epsilon(CFG cfg) {
