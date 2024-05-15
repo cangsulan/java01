@@ -6,9 +6,11 @@
       <module fileurl="file://$PROJECT_DIR$/java001/java001.iml" filepath="$PROJECT_DIR$/java001/java001.iml" />
       <module fileurl="file://$PROJECT_DIR$/java002/java002.iml" filepath="$PROJECT_DIR$/java002/java002.iml" />
       <module fileurl="file://$PROJECT_DIR$/java003/java003.iml" filepath="$PROJECT_DIR$/java003/java003.iml" />
-      <module fileurl="file://$PROJECT_DIR$/java004/java004.iml" filepath="$PROJECT_DIR$/java004/java004.iml" />
       <module fileurl="file://$PROJECT_DIR$/java01.iml" filepath="$PROJECT_DIR$/java01.iml" />
       <module fileurl="file://$PROJECT_DIR$/puzzlegame/puzzlegame.iml" filepath="$PROJECT_DIR$/puzzlegame/puzzlegame.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zidongji_Lab1/zidongji_Lab1.iml" filepath="$PROJECT_DIR$/zidongji_Lab1/zidongji_Lab1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zidongji_Lab2_1/zidongji_Lab2_1.iml" filepath="$PROJECT_DIR$/zidongji_Lab2_1/zidongji_Lab2_1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zidongji_Lab2_2/zidongji_Lab2_2.iml" filepath="$PROJECT_DIR$/zidongji_Lab2_2/zidongji_Lab2_2.iml" />
       <module fileurl="file://$PROJECT_DIR$/zuoye_test/zuoye_test.iml" filepath="$PROJECT_DIR$/zuoye_test/zuoye_test.iml" />
     </modules>
   </component>

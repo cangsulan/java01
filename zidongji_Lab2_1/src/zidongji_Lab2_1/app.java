@@ -1,11 +1,33 @@
-package com.zidongji_Lab2_2;
+package zidongji_Lab2_1;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public class ConvertCFG {
+public class app {
+    public static void main(String[] args) {
+        //下面是 原来写的 实验内容 1：
+        //进行 上下文无关文法 的 转换实验
+        //先得到输入的CFG
+        CFG cfg = new CFG();
+        getCFG(cfg);
+        System.out.println("输入的上下文无关文法G为：");
+        printCFG(cfg);
+        //1. 消去 空串产生式
+        System.out.println("消去 空串产生式 后：");
+        CFG cfg1=delete_epsilon(cfg);
+        printCFG(cfg1);
+        //2. 消去 单生成式
+        System.out.println("消去 单产生式 后：");
+        CFG cfg2=delete_single(cfg1);
+        printCFG(cfg2);
+        //3. 消去 无用符号 和 不可达符号
+        System.out.println("消去 无用符号 后：");
+        CFG cfg3=delete_useless(cfg2);
+        printCFG(cfg3);
+    }
+
     public static CFG delete_epsilon(CFG cfg) {
         CFG newCfg = new CFG();
         ArrayList<String> N0 = new ArrayList<>();

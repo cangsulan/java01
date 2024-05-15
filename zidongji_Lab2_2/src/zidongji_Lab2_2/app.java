@@ -1,4 +1,4 @@
-package com.zidongji_Lab2_2;
+package zidongji_Lab2_2;
 
 public class app {
     public static void main(String[] args) {
