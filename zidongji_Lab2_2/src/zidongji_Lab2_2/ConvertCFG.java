@@ -40,11 +40,7 @@ public class ConvertCFG {
         }
         //然后处理 P1 :
         for (Map.Entry<String, ArrayList<ArrayList<String>>> stringArrayListEntry : cfg.P.entrySet()) {
-            //如果新cfg中没有这个生成式的左端，那么创建一个空的
-            if(!newCfg.P.containsKey(stringArrayListEntry.getKey())) {
-                ArrayList<ArrayList<String>> newRight=new ArrayList<>();
-                newCfg.P.put(stringArrayListEntry.getKey(), newRight);
-            }
+
             for (ArrayList<String> list : stringArrayListEntry.getValue()) {
                 //要得到每个 生成式 的右端中 属于 N0 的符号的个数 total_in_N0
                 int total_in_N0=0;
@@ -54,6 +50,11 @@ public class ConvertCFG {
                     }
                 }
                 if(total_in_N0==0 && !(list.size()==1 && list.get(0).equals("empty"))){
+                    //如果新cfg中没有这个生成式的左端，那么创建一个空的
+                    if(!newCfg.P.containsKey(stringArrayListEntry.getKey())) {
+                        ArrayList<ArrayList<String>> newRight=new ArrayList<>();
+                        newCfg.P.put(stringArrayListEntry.getKey(), newRight);
+                    }
                     newCfg.P.get(stringArrayListEntry.getKey()).add(list);
                     continue;
                 }
@@ -72,6 +73,11 @@ public class ConvertCFG {
                         }
                     }
                     if(newlist.size()!=0 && !newlist.get(0).equals("empty")){
+                        //如果新cfg中没有这个生成式的左端，那么创建一个空的
+                        if(!newCfg.P.containsKey(stringArrayListEntry.getKey())) {
+                            ArrayList<ArrayList<String>> newRight=new ArrayList<>();
+                            newCfg.P.put(stringArrayListEntry.getKey(), newRight);
+                        }
                         //先判断 newlist 是否已经存在
                         if (!newCfg.P.get(stringArrayListEntry.getKey()).contains(newlist)) {
                             newCfg.P.get(stringArrayListEntry.getKey()).add(newlist);
@@ -104,7 +110,6 @@ public class ConvertCFG {
     public static CFG delete_single(CFG cfg) {
         CFG newCfg = new CFG();
         for (String string : cfg.N) {
-            newCfg.P.put(string,new ArrayList<>());
             ArrayList<String> N0=new ArrayList<>();
             N0.add(string);
             ArrayList<String> N1=new ArrayList<>(N0);
@@ -132,9 +137,16 @@ public class ConvertCFG {
             //此时 N0 和 N1 完全一致
             //构造 P1
             for (String B : N0) {
-                for (ArrayList<String> list : cfg.P.get(B)) {
-                    if(!(list.size()==1 && cfg.N.contains(list.get(0)))){
-                        newCfg.P.get(string).add(list);
+                if(cfg.P.get(B)==null){
+
+                }else{
+                    for (ArrayList<String> list : cfg.P.get(B)) {
+                        if(!newCfg.P.keySet().contains(string)){
+                            newCfg.P.put(string,new ArrayList<>());
+                        }
+                        if(!(list.size()==1 && cfg.N.contains(list.get(0)))){
+                            newCfg.P.get(string).add(list);
+                        }
                     }
                 }
             }
@@ -191,9 +203,29 @@ public class ConvertCFG {
             }
         }
         newCfg.N.addAll(N0);
+        //newCfg.N.add(cfg.S);
         //接下来处理 P1：
-        for (String s : N0) {
-            newCfg.P.put(s,cfg.P.get(s));
+        //这里要把所有包含不属于N0的符号的生成式删去
+        for (Map.Entry<String, ArrayList<ArrayList<String>>> entry : cfg.P.entrySet()) {
+            if(N0.contains(entry.getKey())){
+                for (ArrayList<String> list : entry.getValue()) {
+                    boolean canAdd=true;
+                    for (String s : list) {
+                        if(!cfg.T.contains(s) && !N0.contains(s)){
+                            canAdd=false;
+                            break;
+                        }
+                    }
+                    if(canAdd){
+                        if(!newCfg.P.containsKey(entry.getKey())){
+                            newCfg.P.put(entry.getKey(),new ArrayList<>());
+                        }
+                        if(!newCfg.P.get(entry.getKey()).contains(list)){
+                            newCfg.P.get(entry.getKey()).add(list);
+                        }
+                    }
+                }
+            }
         }
         newCfg.S=cfg.S;
         newCfg.T.addAll(cfg.T);
@@ -247,9 +279,6 @@ public class ConvertCFG {
         //最后处理 P1：
         for (Map.Entry<String, ArrayList<ArrayList<String>>> entry : cfg.P.entrySet()) {
             if(N1.contains(entry.getKey())){
-                if(!newCfg.P.containsKey(entry.getKey())){
-                    newCfg.P.put(entry.getKey(),new ArrayList<>());
-                }
                 for (ArrayList<String> list : entry.getValue()) {
                     boolean canAdd=true;
                     for (String s : list) {
@@ -259,6 +288,9 @@ public class ConvertCFG {
                         }
                     }
                     if(canAdd){
+                        if(!newCfg.P.containsKey(entry.getKey())){
+                            newCfg.P.put(entry.getKey(),new ArrayList<>());
+                        }
                         newCfg.P.get(entry.getKey()).add(list);
                     }
                 }
@@ -312,6 +344,9 @@ public class ConvertCFG {
         System.out.println("P: ");
         for (String key : cfg.P.keySet()) {
             System.out.print("\t" + key + " -> ");
+            if(cfg.P.get(key).size() == 0){
+
+            }
             for (String s : cfg.P.get(key).get(0)) {
                 System.out.print(s);
             }

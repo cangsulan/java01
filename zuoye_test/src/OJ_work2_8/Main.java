@@ -21,7 +21,6 @@ public class Main {
                 raf.seek(0);
                 raf.write(sc.nextLine().getBytes());
                 raf.close();
-
                 break;
             case "w":
             case "w+":
