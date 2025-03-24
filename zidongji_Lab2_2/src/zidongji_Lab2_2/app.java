@@ -27,6 +27,8 @@ public class app {
         System.out.println("消去 无用符号 后：");
         CFG cfg3=ConvertCFG.delete_useless(cfg1);
         ConvertCFG.printCFG(cfg3);
+        Scanner sc = new Scanner(System.in);
+        sc.next();
     }
 
     public static CFG specialConvert(CFG cfg){
